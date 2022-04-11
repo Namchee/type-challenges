@@ -1,0 +1,12 @@
+{
+  "name": "type-challenges",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Namchee/type-challenges.git",
+  "author": "Cristopher Namchee <cristophernamchee12@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
+}
