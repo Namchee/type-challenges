@@ -17,5 +17,6 @@ module.exports = {
     'prettier',
 	],
 	rules: {
+    'no-unused-vars': 'off',
 	},
 };
