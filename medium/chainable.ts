@@ -5,7 +5,6 @@ type Chainable<B = {}> = {
   get(): B;
 }
 
-
 /* _____________ Test Cases _____________ */
 // DO NOT EDIT
 import { Alike, Expect } from '@type-challenges/utils';
