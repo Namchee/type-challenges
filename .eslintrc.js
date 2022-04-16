@@ -18,5 +18,6 @@ module.exports = {
 	],
 	rules: {
     'no-unused-vars': 'off',
+    'new-cap': 'off',
 	},
 };
