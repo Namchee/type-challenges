@@ -2,7 +2,6 @@
 
 type Push<T extends any[], U> = [...T, U];
 
-
 /* _____________ Test Cases _____________ */
 import { Equal, Expect } from '@type-challenges/utils';
 
