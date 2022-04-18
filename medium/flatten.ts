@@ -1,8 +1,10 @@
 /* _____________ Your Code Here _____________ */
 
-type Flatten<Arr extends any[]> = {
-  [Index in keyof Arr]: Arr[Index] extends Array<any> ? Flatten<Arr[Index]> : Arr[Index];
-}
+type Flatten<Arr extends any[]> = Arr extends [infer Front, ...infer Rest] ?
+  Front extends any[] ?
+    [...Flatten<Front>, ...Flatten<Rest>] :
+    [Front, ...Flatten<Rest>] :
+    Arr;
 
 /* _____________ Test Cases _____________ */
 // DO NOT EDIT
