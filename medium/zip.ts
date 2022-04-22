@@ -1,9 +1,11 @@
 /* _____________ Your Code Here _____________ */
 
-type Zip<T extends any[], U extends any[]> = {
-  [Index in keyof T]: Index extends keyof U ? [T[Index], U[Index]] : never;
-}
-
+type Zip<T extends any[], U extends any[], A extends any[] = []> =
+  T extends [infer ElT, ...infer RestT]
+    ? U extends [infer ElU, ...infer RestU]
+      ? Zip<RestT, RestU, [...A, [ElT, ElU]]>
+      : A
+    : A;
 
 /* _____________ Test Cases _____________ */
 // DO NOT EDIT
