@@ -14,8 +14,6 @@ type PercentageParser<A extends string> = A extends `${Sign}${infer Num}%`
         : ['-', Nummm, '']
       : ['', A, ''];
 
-type B = PercentageParser<'100%'>;
-
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
