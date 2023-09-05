@@ -1,11 +1,11 @@
 /* _____________ Your Code Here _____________ */
 
-type Split<S extends string, SEP extends string | undefined = undefined> = SEP extends undefined ? [S] : S extends `${infer First}${SEP}${infer Second}` ? [First, ...Split<Second, SEP>] : [S];
+type Split<S extends string, SEP extends string | undefined = undefined> = string extends S ? string[] : SEP extends undefined ? [S] : S extends `${infer First}${SEP}${infer Second}` ? [First, ...Split<Second, SEP>] : SEP extends "" ? [] : [S];
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
-type A = Split<'Hi! How are you?'>;
+type A = Split<'Hi! How are you?', ''>;
 
 type cases = [
   Expect<Equal<Split<'Hi! How are you?'>, ['Hi! How are you?']>>,
