@@ -2,16 +2,11 @@
 
 type Get<
   Obj extends Record<string, any>,
-  Prop extends string,
-  LastValue = never
-> = Prop extends ''
-  ? LastValue
-  : Prop extends keyof Obj
+  Prop extends string
+> = Prop extends keyof Obj
   ? Obj[Prop]
   : GetFirstProp<Prop> extends keyof Obj
-  ? Obj[GetFirstProp<Prop>] extends object
-    ? Get<Obj[GetFirstProp<Prop>], SubProp<Prop>, Obj[GetFirstProp<Prop>]>
-    : Obj[GetFirstProp<Prop>]
+  ? Get<Obj[GetFirstProp<Prop>], SubProp<Prop>>
   : never;
 
 type GetFirstProp<P extends string> = P extends `${infer First}.${infer _}`
