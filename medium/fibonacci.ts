@@ -23,8 +23,6 @@ type ArrayOfLength<
   Temp extends number[] = []
 > = Temp['length'] extends L ? Temp : ArrayOfLength<L, [0, ...Temp]>;
 
-type Fifth = Fibonacci<12>;
-
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils';
 
