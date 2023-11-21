@@ -26,7 +26,7 @@ type ToPrimitive<T> = T extends object
   ? Primitive
   : T;
 
-const sample = {
+type Person = {
   name: 'Namchee',
   job: 'Software Engineer',
   address: {
@@ -37,7 +37,7 @@ const sample = {
   lang: ['Go', 'JavaScript', 'Rust'],
 };
 
-type a = ToPrimitive<PersonInfo>;
+type a = ToPrimitive<Person>;
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils';
