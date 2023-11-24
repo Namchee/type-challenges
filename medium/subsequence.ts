@@ -2,12 +2,9 @@
 
 type Subsequence<
   T extends unknown[],
-  Result extends unknown[] = [],
-  Temp = any
+  Result extends unknown[] = []
 > = T extends [infer El, ...infer Rest]
-  ? Temp extends El
-    ? Subsequence<Rest, Result, Temp>
-    : Subsequence<Rest, [...Result, El], Temp | El>
+  ? Subsequence<Rest, [...Result, El]> | Subsequence<Rest, Result>
   : Result;
 
 /* _____________ Test Cases _____________ */

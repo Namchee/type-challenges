@@ -27,14 +27,14 @@ type ToPrimitive<T> = T extends object
   : T;
 
 type Person = {
-  name: 'Namchee',
-  job: 'Software Engineer',
+  name: 'Namchee';
+  job: 'Software Engineer';
   address: {
-    city: 'xxx',
-    country: 'Indonesia',
-    phone: '123456789',
-  },
-  lang: ['Go', 'JavaScript', 'Rust'],
+    city: 'xxx';
+    country: 'Indonesia';
+    phone: '123456789';
+  };
+  lang: ['Go', 'JavaScript', 'Rust'];
 };
 
 type a = ToPrimitive<Person>;
