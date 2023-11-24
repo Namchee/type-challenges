@@ -16,23 +16,6 @@ type SnakeCase<T> = T extends unknown[]
     }
   : Util<T>;
 
-type Person = {
-  displayName: string;
-  userName: string;
-  language: string[];
-  products: {
-    productName: string;
-    productId: string;
-  }[];
-  personalData: {
-    nationality: string;
-    cityState: string;
-  };
-};
-
-type TheSamePerson = SnakeCase<Person>;
-type a = SnakeCase<'b'>;
-
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils';
 import { ExpectFalse, NotEqual } from '@type-challenges/utils';
