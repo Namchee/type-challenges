@@ -33,23 +33,17 @@ type ConstructRow<
 		: [El, ...ConstructRow<Rest, Index, Val, [...Counter, 0]>]
 	: [];
 
-type HasConsecutiveChips<Arr extends Connect4Cell[], Chip extends Connect4Chips> = Arr extends [
-	infer A extends Connect4Cell,
-	infer B extends Connect4Cell,
-	infer C extends Connect4Cell,
-	infer D extends Connect4Cell,
-	...infer Rest extends Connect4Cell[],
-]
-	? A extends Chip
-		? B extends Chip
-			? C extends Chip
-				? D extends Chip
-					? true
-					: HasConsecutiveChips<[B, C, D, ...Rest], Chip>
-				: HasConsecutiveChips<[B, C, D, ...Rest], Chip>
-			: HasConsecutiveChips<[B, C, D, ...Rest], Chip>
-		: HasConsecutiveChips<[B, C, D, ...Rest], Chip>
-	: false;
+  type HasConsecutiveChips<Arr extends Connect4Cell[], Chip extends Connect4Chips> = Arr extends [
+    infer A extends Connect4Cell,
+    infer B extends Connect4Cell,
+    infer C extends Connect4Cell,
+    infer D extends Connect4Cell,
+    ...infer Rest extends Connect4Cell[],
+  ]
+    ? [A, B, C, D][number] extends Chip
+      ? true
+      : HasConsecutiveChips<[B, C, D, ...Rest], Chip>
+    : false;
 
 type IsWinningRow<Board extends Connect4Cell[][], Chip extends Connect4Chips> = Board extends [
 	infer Row extends Connect4Cell[],
@@ -144,18 +138,10 @@ type IsWinningDiagonalToLeft<
 		: IsWinningDiagonalToLeft<Board, Chip, NextRow[I], 0>
 	: false;
 
-type IsWinning<Board extends Connect4Cell[][], Chip extends Connect4Chips> = IsWinningRow<
-	Board,
-	Chip
-> extends true
-	? true
-	: IsWinningColumn<Board, Chip> extends true
-		? true
-		: IsWinningDiagonalToRight<Board, Chip> extends true
-			? true
-			: IsWinningDiagonalToLeft<Board, Chip> extends true
-				? true
-				: false;
+type IsWinning<Board extends Connect4Cell[][], Chip extends Connect4Chips> =
+  true extends [IsWinningRow<Board, Chip>, IsWinningColumn<Board, Chip>, IsWinningDiagonalToLeft<Board, Chip>, IsWinningDiagonalToRight<Board, Chip>][number]
+    ? true
+    : false;
 
 type IsDraw<Board extends Connect4Cell[][]> = Board extends [
 	infer El extends Connect4Cell[],
