@@ -4,17 +4,11 @@ type DELICIOUS_COOKIES = "🍪";
 type MazeMatrix = MazeItem[][];
 type Directions = "up" | "down" | "left" | "right";
 
-type Length<T extends any[]> =
-    T extends { length: infer L } ? L : never;
 type BuildTuple<L extends number, T extends any[] = [], Value = any> =
-    T extends { length: L } ? T : BuildTuple<L, [...T, Value], Value>;
+    T['length'] extends L ? T : BuildTuple<L, [...T, Value], Value>;
 
-type Add<A extends number, B extends number> =
-    Length<[...BuildTuple<A>, ...BuildTuple<B>]>;
-type Subtract<A extends number, B extends number> =
-    BuildTuple<A> extends [...(infer U), ...BuildTuple<B>]
-        ? Length<U>
-        : never;
+type Increment<A extends number> = [...BuildTuple<A>, 1]['length'];
+type Decrement<A extends number> = BuildTuple<A> extends [infer _, ...infer Rest] ? Rest['length'] : never;
 
 type FindSantaColumn<
 	Input extends MazeItem[],
@@ -69,42 +63,30 @@ type FillSanta<
 		: [El, ...FillSanta<Rest, Row, Column, [...Itr, 0]>]
 	: [];
 
-type MoveUp<Input extends MazeMatrix> = FindSanta<Input> extends [infer Row extends number, infer Col extends number]
-	? Row extends 0
-		? Escape<Input>
-		: Input[Subtract<Row, 1>][Col] extends Alley
-			? FillSanta<RemoveSanta<Input>, Subtract<Row, 1>, Col>
-			: Input
-	: never;
-type MoveLeft<Input extends MazeMatrix> = FindSanta<Input> extends [infer Row extends number, infer Col extends number]
-	? Col extends 0
-		? Escape<Input>
-		: Input[Row][Subtract<Col, 1>] extends Alley
-			? FillSanta<RemoveSanta<Input>, Row, Subtract<Col, 1>>
-			: Input
-	: never;
-type MoveRight<Input extends MazeMatrix> = FindSanta<Input> extends [infer Row extends number, infer Col extends number]
-	? Col extends Subtract<ColumnLimit<Input>, 1>
-		? Escape<Input>
-		: Add<Col, 1> extends keyof MazeMatrix[number]
-			? Add<Col, 1> extends number
-				? Input[Row][Add<Col, 1>] extends Alley
-					? FillSanta<RemoveSanta<Input>, Row, Add<Col, 1> >
-					: Input
-				: never
-			: never
-	: never;
-type MoveDown<Input extends MazeMatrix> = FindSanta<Input> extends [infer Row extends number, infer Col extends number]
-	? Row extends Subtract<RowLimit<Input>, 1>
-		? Escape<Input>
-		: Add<Row, 1> extends keyof MazeMatrix
-			? Add<Row, 1> extends number
-				? Input[Add<Row, 1>][Col] extends Alley
-					? FillSanta<RemoveSanta<Input>, Add<Row, 1>, Col>
-					: Input
-				: never
-			: never
-	: never;
+type MoveUp<Input extends MazeMatrix> = FindSanta<Input>[0] extends 0
+	? Escape<Input>
+	: Input[Decrement<FindSanta<Input>[0]>][FindSanta<Input>[1]] extends Alley
+		? FillSanta<RemoveSanta<Input>, Decrement<FindSanta<Input>[0]>, FindSanta<Input>[1]>
+		: Input;
+type MoveLeft<Input extends MazeMatrix> = FindSanta<Input>[1] extends 0
+? Escape<Input>
+: Input[FindSanta<Input>[0]][Decrement<FindSanta<Input>[1]>] extends Alley
+  ? FillSanta<RemoveSanta<Input>, FindSanta<Input>[0], Decrement<FindSanta<Input>[1]>>
+  : Input;
+type MoveRight<Input extends MazeMatrix> = FindSanta<Input>[1] extends Decrement<ColumnLimit<Input>>
+	? Escape<Input>
+	: Increment<FindSanta<Input>[1]> extends number
+		? Input[FindSanta<Input>[0]][Increment<FindSanta<Input>[1]>] extends Alley
+      ? FillSanta<RemoveSanta<Input>, FindSanta<Input>[0], Increment<FindSanta<Input>[1]>>
+      : Input
+    : never;
+type MoveDown<Input extends MazeMatrix> = FindSanta<Input>[0] extends Decrement<RowLimit<Input>>
+  ? Escape<Input>
+  : Increment<FindSanta<Input>[0]> extends number
+    ? Input[Increment<FindSanta<Input>[0]>][FindSanta<Input>[1]] extends Alley
+      ? FillSanta<RemoveSanta<Input>, Increment<FindSanta<Input>[0]>, FindSanta<Input>[1]>
+      : Input
+    : never;
 
 type Move<Input extends MazeMatrix, Direction extends Directions> = Direction extends 'up'
 	? MoveUp<Input>
