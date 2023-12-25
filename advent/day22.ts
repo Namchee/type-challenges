@@ -61,10 +61,6 @@ type IsAreaValid<
 		: IsAreaValid<Rest, 0>
 	: true
 
-type Validate<Board extends Reindeer[][][]> = IsRowValid<Board> extends true
-  ? IsColumnValid<Board> extends true
-    ? IsAreaValid<Board> extends true
-      ? true
-      : false
-    : false
+type Validate<Board extends Reindeer[][][]> = true extends [IsRowValid<Board>, IsColumnValid<Board>, IsAreaValid<Board>]
+  ? true
   : false
